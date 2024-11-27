@@ -7,29 +7,26 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="favicon.ico">
       <style>
-    :root {
-      --cor-de-fundo-dupla1: #1E88E5;  /* Azul vibrante */
-      --cor-de-texto-dupla1: #FFFFFF;  /* Branco */
-
-      --cor-de-fundo-dupla2: #E53935;  /* Vermelho vibrante */
-      --cor-de-texto-dupla2: #FFFFFF;  /* Branco */
-      
-      --cor-do-fundo-principal: #121212;  /* Preto */
-      --cor-do-fundo-header: #1C1C1C;  /* Cinza muito escuro */
-
-      --cor-de-fundo-botao-dupla1: #42A5F5;  /* Azul claro */
-      --cor-de-fundo-botao-dupla2: #EF5350;  /* Vermelho claro */
-
-      --cor-texto-principal: #E0E0E0;  /* Cinza claro */
-      --cor-texto-secundario: #B0B0B0;  /* Cinza médio */
-
+:root {
+      --cor-de-fundo-dupla1: #2E8B57;
+      --cor-de-texto-dupla1: #FFFFFF;
+      --cor-de-fundo-dupla2: #4169E1;
+      --cor-de-texto-dupla2: #FFFFFF;
+      --cor-do-fundo-principal: #121212;
+      --cor-do-fundo-header: #1C1C1C;
+      --cor-de-fundo-botao-dupla1: #3CB371;
+      --cor-de-fundo-botao-dupla2: #4682B4;
+      --cor-texto-principal: #E0E0E0;
+      --cor-texto-secundario: #A9A9A9;
       --familia-da-fonte: 'Open Sans', sans-serif;
-      
       --sombra-dos-elementos: 0 0.375rem 1.25rem rgba(0, 0, 0, 0.1);
       --raio-da-borda-botao: 0.625rem;
       --espacamento-interno-botao: 0.875rem;
-
       --duracao-transicao-efeito: 0.1s;
+      --cor-botao-default-bg: rgba(255, 255, 255, 0.8);
+      --cor-botao-default-text: #000000;
+      --cor-botao-hover-bg: rgba(255, 255, 255, 0.6);
+      --cor-botao-active-scale: 0.95;
     }
 
     * {
@@ -76,7 +73,7 @@
       font-weight: bold;
       margin: auto 0;
       transition: color var(--duracao-transicao-efeito);
-      color: var(--cor-de-texto-dupla1);  /* Ajustando a cor do texto para melhor contraste */
+      color: var(--cor-de-texto-dupla1);
     }
 
     .container-botoes-pontuacao {
@@ -100,30 +97,30 @@
       min-width: 4.375rem;
       font-size: 1.5rem;
       font-weight: bold;
-      background-color: rgba(255, 255, 255, 0.8);  /* Aumentando a opacidade para melhor contraste */
-      color: #000000;  /* Preto para maior contraste */
+      background-color: var(--cor-botao-default-bg);
+      color: var(--cor-botao-default-text);
       border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     .botao-de-pontuacao[data-carta='1'] {
-      background-color: #64B5F6;  /* Azul médio */
+      background-color: #FF6347;
     }
 
     .botao-de-pontuacao[data-carta='2'] {
-      background-color: #FF8A80;  /* Vermelho médio */
+      background-color: #20B2AA;
     }
 
     .botao-de-pontuacao:active,
     .botao-desfazer-ultima-pontuacao:active {
-      transform: scale(0.95);
+      transform: scale(var(--cor-botao-active-scale));
     }
 
     .botao-de-pontuacao[data-carta='1']:active {
-      background-color: #42A5F5;  /* Azul claro */
+      background-color: #CD5C5C;
     }
 
     .botao-de-pontuacao[data-carta='2']:active {
-      background-color: #EF5350;  /* Vermelho claro */
+      background-color: #008B8B;
     }
 
     .botao-desfazer-ultima-pontuacao {
@@ -135,17 +132,21 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: rgba(255, 255, 255, 0.8);  /* Aumentando a opacidade para melhor contraste */
+      background-color: var(--cor-botao-default-bg);
       border-radius: 50%;
       filter: brightness(1.1);
-      color: #000000;  /* Preto para maior contraste */
-      font-size: 1.5rem;  /* Aumentando o tamanho do ícone */
-      line-height: 1;  /* Ajustando o alinhamento vertical */
-      font-weight: bold;  /* Aumentando a espessura do ícone */
+      color: var(--cor-botao-default-text);
     }
 
-    .botao-desfazer-ultima-pontuacao:active {
-      transform: scale(0.95);
+    .botao-desfazer-ultima-pontuacao::before {
+      content: '';
+      display: inline-block;
+      width: 0.6rem;
+      height: 0.6rem;
+      border: solid var(--cor-botao-default-text);
+      border-width: 0 0.2rem 0.2rem 0;
+      transform: rotate(135deg);
+      margin: auto;
     }
 
     button:focus {
@@ -173,6 +174,7 @@
         transform: scale(1);
       }
     }
+
         </style>
 </head>
 <body>
@@ -180,13 +182,13 @@
   <script>
     const CONFIGURACAO = {
       cores: {
-        dupla1: { fundo: '#1E88E5', texto: '#FFFFFF' },
-        dupla2: { fundo: '#E53935', texto: '#FFFFFF' },
+        dupla1: { fundo: '#2E8B57', texto: '#FFFFFF' },
+        dupla2: { fundo: '#4169E1', texto: '#FFFFFF' },
       },
       pontuacaoValida: [5, 10, 20, 50],
     };
 
-    class Dupla {
+    class PlacarDupla {
       constructor({ id, nome, corFundo, corTexto }) {
         this.id = id;
         this.nome = nome;
@@ -197,7 +199,7 @@
       }
 
       adicionarPontos(pontos) {
-        if (CONFIGURACAO.pontuacaoValida.includes(pontos)) {
+        if (ValidadorPontuacao.validar(pontos)) {
           this.pontuacao += pontos;
           this.historicoPontuacao.push(pontos);
         }
@@ -219,108 +221,70 @@
       }
     }
 
-    class Interface {
+    class GerenciadorInterfaceJogo {
       constructor(containerId) {
         this.container = document.getElementById(containerId);
       }
 
-      gerarCartaoDupla(dupla) {
-        const cartao = this.criarElementoCartao(dupla);
-        this.adicionarBotaoDesfazer(cartao, dupla);
-        this.adicionarPontuacao(cartao, dupla);
-        this.adicionarBotoesPontuacao(cartao, dupla);
-        this.container.appendChild(cartao);
-        return cartao;
+      criarElementoHtml(tipo, classes = '', estilos = {}, conteudo = '') {
+        const elemento = document.createElement(tipo);
+        elemento.className = classes;
+        Object.assign(elemento.style, estilos);
+        elemento.textContent = conteudo;
+        return elemento;
       }
 
-      criarElementoCartao(dupla) {
-        const cartao = document.createElement('div');
-        cartao.className = 'cartao-da-dupla';
-        cartao.style.backgroundColor = dupla.corFundo;
-        return cartao;
-      }
-
-      adicionarBotaoDesfazer(cartao, dupla) {
-        const botaoDesfazer = document.createElement('button');
-        botaoDesfazer.className = 'botao-desfazer-ultima-pontuacao';
-        botaoDesfazer.innerHTML = '&#8630;';  /* Unicode para seta curvada para a esquerda */
+      criarCartaoDaDupla(dupla) {
+        const cartao = this.criarElementoHtml('div', 'cartao-da-dupla', { backgroundColor: dupla.corFundo });
+        const botaoDesfazer = this.criarElementoHtml('button', 'botao-desfazer-ultima-pontuacao');
         botaoDesfazer.addEventListener('click', () => {
           dupla.desfazerUltimaPontuacao();
           this.atualizarPontuacao(cartao, dupla);
         });
-        cartao.appendChild(botaoDesfazer);
+        
+        const pontuacaoSpan = this.criarElementoHtml('span', 'pontuacao-da-dupla', { color: dupla.corTexto }, dupla.obterPontuacao());
+        const botoesPontuacaoContainer = this.criarContainerDeBotoesDePontuacao(dupla, cartao);
+
+        cartao.append(botaoDesfazer, pontuacaoSpan, botoesPontuacaoContainer);
+        this.container.appendChild(cartao);
       }
 
-      adicionarPontuacao(cartao, dupla) {
-        const spanPontuacao = document.createElement('span');
-        spanPontuacao.className = 'pontuacao-da-dupla';
-        spanPontuacao.style.color = dupla.corTexto;
-        spanPontuacao.textContent = dupla.obterPontuacao();
-        cartao.appendChild(spanPontuacao);
-      }
-
-      adicionarBotoesPontuacao(cartao, dupla) {
-        const containerBotoes = document.createElement('div');
-        containerBotoes.className = 'container-botoes-pontuacao';
+      criarContainerDeBotoesDePontuacao(dupla, cartao) {
+        const containerBotoes = this.criarElementoHtml('div', 'container-botoes-pontuacao');
         
         CONFIGURACAO.pontuacaoValida.forEach((pontos) => {
-          const botao = document.createElement('button');
-          botao.className = 'botao-de-pontuacao';
+          const botao = this.criarElementoHtml('button', 'botao-de-pontuacao', {}, pontos);
           botao.dataset.valor = pontos;
-          botao.textContent = pontos;
-
-          botao.addEventListener('click', (event) => this.handleBotaoPontuacao(event, dupla, cartao));
+          botao.addEventListener('click', (event) => {
+            const pontos = parseInt(event.target.dataset.valor, 10);
+            dupla.adicionarPontos(pontos);
+            this.atualizarPontuacao(cartao, dupla);
+          });
 
           containerBotoes.appendChild(botao);
         });
 
-        cartao.appendChild(containerBotoes);
-      }
-
-      handleBotaoPontuacao(event, dupla, cartao) {
-        const pontos = parseInt(event.target.dataset.valor, 10);
-        if (ValidadorPontuacao.validar(pontos)) {
-          dupla.adicionarPontos(pontos);
-          this.atualizarPontuacao(cartao, dupla);
-        }
-      }
-
-      atualizarElementoCartao(cartao, seletor, conteudo) {
-        const elemento = cartao.querySelector(seletor);
-        if (elemento) elemento.textContent = conteudo;
+        return containerBotoes;
       }
 
       atualizarPontuacao(cartao, dupla) {
-        this.atualizarElementoCartao(cartao, '.pontuacao-da-dupla', dupla.obterPontuacao());
         const elementoPontuacao = cartao.querySelector('.pontuacao-da-dupla');
+        elementoPontuacao.textContent = dupla.obterPontuacao();
         elementoPontuacao.classList.add('atualizada');
         setTimeout(() => elementoPontuacao.classList.remove('atualizada'), 300);
       }
     }
 
-    class PlacarDominó {
-      constructor(duplasConfig, interfaceUsuario) {
-        this.duplas = duplasConfig.map(config => new Dupla(config));
-        this.interfaceUsuario = interfaceUsuario;
+    class GerenciadorDePlacarDomino {
+      constructor(duplasConfig, interfaceJogo) {
+        this.duplas = duplasConfig.map(config => new PlacarDupla(config));
+        this.interfaceJogo = interfaceJogo;
       }
 
       iniciar() {
         this.duplas.forEach((dupla) => {
-          const cartao = this.interfaceUsuario.gerarCartaoDupla(dupla);
-          this.associarEventos(cartao, dupla);
+          this.interfaceJogo.criarCartaoDaDupla(dupla);
         });
-      }
-
-      associarEventos(cartao, dupla) {
-        const botaoDesfazer = cartao.querySelector('.botao-desfazer-ultima-pontuacao');
-        botaoDesfazer.addEventListener('click', () => {
-          this.desfazerPontuacao(dupla);
-          this.interfaceUsuario.atualizarPontuacao(cartao, dupla);
-        });
-      }
-
-      desfazerPontuacao(dupla) {
-        dupla.desfazerUltimaPontuacao();
       }
     }
 
@@ -330,10 +294,16 @@
         { id: 'dupla2', nome: 'Dupla 2', corFundo: 'var(--cor-de-fundo-dupla2)', corTexto: 'var(--cor-de-texto-dupla2)' }
       ];
 
-      const interfaceUsuario = new Interface('container-cartoes-duplas');
-      const placarDominó = new PlacarDominó(configuracaoDuplas, interfaceUsuario);
-      placarDominó.iniciar();
+      const interfaceJogo = new GerenciadorInterfaceJogo('container-cartoes-duplas');
+      const gerenciadorDePlacar = new GerenciadorDePlacarDomino(configuracaoDuplas, interfaceJogo);
+      gerenciadorDePlacar.iniciar();
+
+      // Código para manter a tela ativa
+      navigator.wakeLock.request('screen').catch(err => {
+        console.error(`Erro ao ativar Wake Lock: ${err.name}, ${err.message}`);
+      });
     });
+      
         </script>
     
     <script>
