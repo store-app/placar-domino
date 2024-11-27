@@ -1,7 +1,7 @@
 {
     "name": "Placar de Dominó",
     "short_name": "Placar Dominó",
-    "description": "Página de teste PWA para um placar de dominó offline.",
+    "description": "Aplicativo PWA para acompanhar a pontuação de partidas de dominó, com funcionalidades para adicionar pontos, desfazer a última pontuação e resetar o placar.",
     "start_url": "/placar-domino",
     "display": "standalone",
     "background_color": "#ffffff",
